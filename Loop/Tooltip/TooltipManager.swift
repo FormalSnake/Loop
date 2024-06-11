@@ -119,6 +119,7 @@ class TooltipManager: ObservableObject {
         screen = nil
         currentAction = .init(.noAction)
         draggingWindow = nil
+        directionMap = [:]
 
         if forceClose {
             didForceClose = true
