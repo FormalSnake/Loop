@@ -17,8 +17,7 @@ struct ResizeSelectorView: View {
                 HStack(spacing: 0) {
                     ResizeSelectorRectangle(
                         action: .init(.maximize),
-                        sectionSize: geo.size,
-                        windowHeight: windowHeight
+                        sectionSize: geo.size
                     )
                 }
             }
@@ -31,13 +30,11 @@ struct ResizeSelectorView: View {
                 HStack(spacing: 0) {
                     ResizeSelectorRectangle(
                         action: .init(.leftHalf),
-                        sectionSize: geo.size,
-                        windowHeight: windowHeight
+                        sectionSize: geo.size
                     )
                     ResizeSelectorRectangle(
                         action: .init(.rightHalf),
-                        sectionSize: geo.size,
-                        windowHeight: windowHeight
+                        sectionSize: geo.size
                     )
                 }
             }
@@ -50,13 +47,11 @@ struct ResizeSelectorView: View {
                 HStack(spacing: 0) {
                     ResizeSelectorRectangle(
                         action: .init(.leftTwoThirds),
-                        sectionSize: geo.size,
-                        windowHeight: windowHeight
+                        sectionSize: geo.size
                     )
                     ResizeSelectorRectangle(
                         action: .init(.rightThird),
-                        sectionSize: geo.size,
-                        windowHeight: windowHeight
+                        sectionSize: geo.size
                     )
                 }
             }
@@ -70,25 +65,21 @@ struct ResizeSelectorView: View {
                     HStack(spacing: 0) {
                         ResizeSelectorRectangle(
                             action: .init(.topLeftQuarter),
-                            sectionSize: geo.size,
-                            windowHeight: windowHeight
+                            sectionSize: geo.size
                         )
                         ResizeSelectorRectangle(
                             action: .init(.topRightQuarter),
-                            sectionSize: geo.size,
-                            windowHeight: windowHeight
+                            sectionSize: geo.size
                         )
                     }
                     HStack(spacing: 0) {
                         ResizeSelectorRectangle(
                             action: .init(.bottomLeftQuarter),
-                            sectionSize: geo.size,
-                            windowHeight: windowHeight
+                            sectionSize: geo.size
                         )
                         ResizeSelectorRectangle(
                             action: .init(.bottomRightQuarter),
-                            sectionSize: geo.size,
-                            windowHeight: windowHeight
+                            sectionSize: geo.size
                         )
                     }
                 }
@@ -96,14 +87,6 @@ struct ResizeSelectorView: View {
             .modifier(ResizeSelectorGroup())
         }
         .padding(padding)
-        .background {
-            GeometryReader { proxy in
-                Color.clear
-                    .onAppear {
-                        windowHeight = proxy.size.height
-                    }
-            }
-        }
     }
 }
 

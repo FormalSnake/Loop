@@ -11,15 +11,14 @@ import SwiftUI
 
 class TooltipManager: ObservableObject {
     private var eventMonitor: EventMonitor?
-//    private let previewController = PreviewController()
     private var dynamicNotch: DynamicNotch?
 
     private var didForceClose: Bool = false // This is auto-reset once the user stops dragging
     private var draggingWindow: Window?
-    static var screenOffset: NSPoint?
+
     @Published var screen: NSScreen?
-    @Published var mouseEvent: NSEvent?
     @Published var currentAction: WindowAction = .init(.noAction)
+    @Published var directionMap: [UUID: (action: WindowAction, frame: NSRect)] = [:]
 
     func start() {
         dynamicNotch = DynamicNotch(
@@ -50,7 +49,6 @@ class TooltipManager: ObservableObject {
 
     func leftMouseDragged(event: NSEvent) {
         guard Defaults[.tooltipConfiguration] != .off, !didForceClose else { return }
-        mouseEvent = event
 
         if let screenWithMouse = NSScreen.screenWithMouse {
             if screen != screenWithMouse {
@@ -59,18 +57,39 @@ class TooltipManager: ObservableObject {
             }
 
             self.screen = screenWithMouse
-
-            if TooltipManager.screenOffset == nil {
-                TooltipManager.screenOffset = screenWithMouse.frame.origin
-            }
         }
 
         if draggingWindow == nil {
             draggingWindow = WindowEngine.frontmostWindow
         }
 
-        if DynamicNotch.checkIfMouseIsInNotch(), let dynamicNotch, let screen {
+        if DynamicNotch.checkIfMouseIsInNotch(), let dynamicNotch, let screen, !dynamicNotch.isVisible {
             dynamicNotch.show(on: screen)
+        } else {
+            if let screen = self.screen {
+                if let newAction = self.directionMap.first(where: { map in
+                    var frame = map.value.frame.flipY(screen: screen)
+                    frame.origin.x += screen.frame.minX
+                    frame.origin.y += screen.frame.minY
+
+                    return frame.contains(NSEvent.mouseLocation)
+                }) {
+                    if Defaults[.hapticFeedback] {
+                        NSHapticFeedbackManager.defaultPerformer.perform(
+                            NSHapticFeedbackManager.FeedbackPattern.alignment,
+                            performanceTime: NSHapticFeedbackManager.PerformanceTime.now
+                        )
+                    }
+
+                    withAnimation(.easeOut(duration: 0.1)) {
+                        self.currentAction = newAction.value.action
+                    }
+                } else {
+                    withAnimation(.easeOut(duration: 0.1)) {
+                        self.currentAction = .init(.noAction)
+                    }
+                }
+            }
         }
     }
 
@@ -100,7 +119,6 @@ class TooltipManager: ObservableObject {
         screen = nil
         currentAction = .init(.noAction)
         draggingWindow = nil
-        TooltipManager.screenOffset = nil
 
         if forceClose {
             didForceClose = true

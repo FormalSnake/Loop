@@ -8,8 +8,9 @@
 import Defaults
 import SwiftUI
 
-struct ResizeSelectorRectangle: View {
+struct ResizeSelectorRectangle: View, Identifiable {
     @EnvironmentObject var tooltipManager: TooltipManager
+    var id: UUID = .init()
 
     let cornerRadius: CGFloat = 5
 
@@ -18,12 +19,10 @@ struct ResizeSelectorRectangle: View {
 
     let action: WindowAction
     let sectionSize: CGSize
-    let windowHeight: CGFloat
 
-    init(action: WindowAction, sectionSize: CGSize, windowHeight: CGFloat) {
+    init(action: WindowAction, sectionSize: CGSize) {
         self.action = action
         self.sectionSize = sectionSize
-        self.windowHeight = windowHeight
     }
 
     var body: some View {
@@ -43,35 +42,12 @@ struct ResizeSelectorRectangle: View {
                 }
                 .padding(3)
                 .position(x: geo.frame(in: .local).midX, y: geo.frame(in: .local).midY)
-                .onChange(of: tooltipManager.mouseEvent) { _ in
-                    guard
-                        let offset = TooltipManager.screenOffset,
-                        tooltipManager.currentAction.direction != self.action.direction
-                    else {
-                        return
-                    }
 
-                    var frame = geo.frame(in: .global)
-                    guard let screen = tooltipManager.screen else { return }
-                    frame = frame.flipY(maxY: screen.frame.maxY)
-
-                    frame.origin.x += offset.x
-                    frame.origin.y += offset.y
-
-                    if frame.contains(NSEvent.mouseLocation) {
-                        Notification.Name.updateUIDirection.post(userInfo: ["action": action])
-
-                        if Defaults[.hapticFeedback] {
-                            NSHapticFeedbackManager.defaultPerformer.perform(
-                                NSHapticFeedbackManager.FeedbackPattern.alignment,
-                                performanceTime: NSHapticFeedbackManager.PerformanceTime.now
-                            )
-                        }
-
-                        withAnimation(.easeOut(duration: 0.1)) {
-                            tooltipManager.currentAction = action
-                        }
-                    }
+                .onAppear {
+                    tooltipManager.directionMap[id] = (action: action, frame: geo.frame(in: .global))
+                }
+                .onChange(of: geo.frame(in: .global)) { _ in
+                    tooltipManager.directionMap[id] = (action: action, frame: geo.frame(in: .global))
                 }
         }
         .frame(
