@@ -28,12 +28,12 @@ class TooltipManager: ObservableObject {
             )
         }
 
-        if let screenWithMouse = NSScreen.screenWithMouse {
-            if screen != screenWithMouse {
-                dynamicNotch?.hide()
-                previewController.close()
-                currentAction = .init(.noAction)
-            }
+        if let screenWithMouse = NSScreen.screenWithMouse,
+           screen != screenWithMouse {
+            dynamicNotch?.hide()
+            previewController.close()
+            currentAction = .init(.noAction)
+            directionMap = [:]
 
             screen = screenWithMouse
         }

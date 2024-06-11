@@ -39,7 +39,6 @@ struct ResizeSelectorRectangle: View {
                             .foregroundStyle(Color.primary.opacity(0.5))
                     }
                 }
-                .padding(3)
                 .position(
                     x: geo.frame(in: .local).midX,
                     y: geo.frame(in: .local).midY
@@ -48,6 +47,7 @@ struct ResizeSelectorRectangle: View {
                     tooltipManager.directionMap[action] = geo.frame(in: .global)
                 }
         }
+        .padding(3)
         .frame(
             width: sectionSize.width * (action.direction.frameMultiplyValues?.width ?? .zero),
             height: sectionSize.height * (action.direction.frameMultiplyValues?.height ?? .zero)
