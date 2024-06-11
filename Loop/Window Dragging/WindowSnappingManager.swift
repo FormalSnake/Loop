@@ -10,7 +10,7 @@ import Defaults
 
 class WindowSnappingManager {
     private var direction: WindowDirection = .noAction
-    private let previewController = PreviewController()
+    private let previewController = WindowDragManager.previewController
 
     func getWindowSnapDirection() {
         guard let screen = NSScreen.screenWithMouse else {
@@ -66,6 +66,10 @@ class WindowSnappingManager {
     }
 
     func reset() {
+        guard direction != .noAction else {
+            return
+        }
+
         DispatchQueue.main.async {
             self.direction = .noAction
             self.previewController.close()

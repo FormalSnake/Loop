@@ -234,22 +234,24 @@
 			path = "About Window";
 			sourceTree = "<group>";
 		};
-		A826EA542C17DD72003EACA3 /* ResizeSelector */ = {
+		A826EA572C17DD72003EACA3 /* Tooltip */ = {
 			isa = PBXGroup;
 			children = (
 				A826EA532C17DD72003EACA3 /* ResizeSelectorView.swift */,
 				A826EA522C17DD72003EACA3 /* ResizeSelectorRectangle.swift */,
 			);
-			path = ResizeSelector;
+			path = Tooltip;
 			sourceTree = "<group>";
 		};
-		A826EA572C17DD72003EACA3 /* Tooltip */ = {
+		A826EA652C19078D003EACA3 /* Window Dragging */ = {
 			isa = PBXGroup;
 			children = (
-				A826EA542C17DD72003EACA3 /* ResizeSelector */,
+				A864F4672AA660CD00579738 /* WindowDragManager.swift */,
+				A826EA5E2C18F1BC003EACA3 /* WindowSnappingManager.swift */,
 				A826EA562C17DD72003EACA3 /* TooltipManager.swift */,
+				A826EA572C17DD72003EACA3 /* Tooltip */,
 			);
-			path = Tooltip;
+			path = "Window Dragging";
 			sourceTree = "<group>";
 		};
 		A82B1AF32BD35C5900E2F3F9 /* Theming */ = {
@@ -278,8 +280,6 @@
 				A848D8A62A8C2F3F00060834 /* LoopManager.swift */,
 				A87DDD142B50A6A400A32C76 /* ScreenManager.swift */,
 				A8A2ABE62A3FB0370067B5A9 /* KeybindMonitor.swift */,
-				A864F4672AA660CD00579738 /* WindowDragManager.swift */,
-				A826EA5E2C18F1BC003EACA3 /* WindowSnappingManager.swift */,
 				A82521ED29E235AC00139654 /* PermissionsManager.swift */,
 				A8EF1F08299C87DF00633440 /* IconManager.swift */,
 				A869C1A02B38C6E600AD1A84 /* StageManager.swift */,
@@ -471,14 +471,14 @@
 				A8E59C38297F5E9A0064D4BA /* LoopApp.swift */,
 				A8BC77782C0EB4DD008E2EDA /* AppDelegate+UNNotifications.swift */,
 				A893D3622BD3298700063510 /* Luminare */,
-				A83EEEB02AD46BAC00F3EA2D /* MenuBar */,
-				A864F4662AA65EC200579738 /* Window Management */,
 				A8330ABB2A3AC05200673C8D /* Managers */,
-				A826EA572C17DD72003EACA3 /* Tooltip */,
+				A864F4662AA65EC200579738 /* Window Management */,
+				A826EA652C19078D003EACA3 /* Window Dragging */,
 				A82521EA29E2349700139654 /* About Window */,
 				A88265FB29808E0D00BCB197 /* Radial Menu */,
 				A88265FA29808DED00BCB197 /* Preview Window */,
 				A88265FC298092B500BCB197 /* Settings */,
+				A83EEEB02AD46BAC00F3EA2D /* MenuBar */,
 				A80900D12AA3F9F20085C63B /* Utilities */,
 				A8330AD52A3AC29C00673C8D /* Extensions */,
 				A8E59C3C297F5E9B0064D4BA /* Assets.xcassets */,

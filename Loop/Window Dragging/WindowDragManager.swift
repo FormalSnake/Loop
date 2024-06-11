@@ -15,6 +15,7 @@ class WindowDragManager {
 
     let windowSnappingManager = WindowSnappingManager()
     let tooltipManager = TooltipManager()
+    static let previewController = PreviewController()
 
     private var leftMouseDraggedMonitor: EventMonitor?
     private var leftMouseUpMonitor: EventMonitor?
@@ -74,6 +75,7 @@ class WindowDragManager {
 
             self.windowSnappingManager.reset()
             self.draggingWindow = nil
+            WindowDragManager.previewController.close()
         }
 
         leftMouseDraggedMonitor!.start()
