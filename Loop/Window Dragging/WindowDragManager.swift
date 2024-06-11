@@ -39,8 +39,8 @@ class WindowDragManager {
                 let showTooltip = Defaults[.tooltip]
                 let windowSnapping = Defaults[.windowSnapping]
 
+                // This prevents Mission Control from activating
                 if showTooltip || windowSnapping {
-                    // This prevents Mission Control from activating
                     if let frame = NSScreen.main?.frame {
                         if NSEvent.mouseLocation.y == frame.maxY {
                             cgEvent.location.y -= 1

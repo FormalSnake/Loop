@@ -15,8 +15,7 @@ class TooltipManager: ObservableObject {
 
     @Published var screen: NSScreen?
     @Published var currentAction: WindowAction = .init(.noAction)
-    @Published var directionMap: [UUID: (action: WindowAction, frame: NSRect)] = [:]
-
+    @Published var directionMap: [WindowAction: NSRect] = [:]
     var isVisible: Bool {
         dynamicNotch?.isVisible ?? false
     }
@@ -49,7 +48,7 @@ class TooltipManager: ObservableObject {
             let oldAction = currentAction
 
             if let newAction = directionMap.first(where: { map in
-                var frame = map.value.frame.flipY(screen: screen)
+                var frame = map.value.flipY(screen: screen)
                 frame.origin.x += screen.frame.minX
                 frame.origin.y += screen.frame.minY
 
@@ -65,7 +64,7 @@ class TooltipManager: ObservableObject {
                 previewController.open(screen: screen, window: nil)
 
                 withAnimation(.easeOut(duration: 0.1)) {
-                    self.currentAction = newAction.value.action
+                    self.currentAction = newAction.key
                 }
             } else {
                 withAnimation(.easeOut(duration: 0.1)) {

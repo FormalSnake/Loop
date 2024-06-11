@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ResizeSelectorView: View {
     let padding: CGFloat = 15
-    @State var windowHeight: CGFloat = 0
 
     var body: some View {
         HStack(spacing: 0) {

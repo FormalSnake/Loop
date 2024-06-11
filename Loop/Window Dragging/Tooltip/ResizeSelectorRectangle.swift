@@ -8,9 +8,8 @@
 import Defaults
 import SwiftUI
 
-struct ResizeSelectorRectangle: View, Identifiable {
+struct ResizeSelectorRectangle: View {
     @EnvironmentObject var tooltipManager: TooltipManager
-    var id: UUID = .init()
 
     let cornerRadius: CGFloat = 5
 
@@ -41,13 +40,12 @@ struct ResizeSelectorRectangle: View, Identifiable {
                     }
                 }
                 .padding(3)
-                .position(x: geo.frame(in: .local).midX, y: geo.frame(in: .local).midY)
-
-                .onAppear {
-                    tooltipManager.directionMap[id] = (action: action, frame: geo.frame(in: .global))
-                }
+                .position(
+                    x: geo.frame(in: .local).midX,
+                    y: geo.frame(in: .local).midY
+                )
                 .onChange(of: geo.frame(in: .global)) { _ in
-                    tooltipManager.directionMap[id] = (action: action, frame: geo.frame(in: .global))
+                    tooltipManager.directionMap[action] = geo.frame(in: .global)
                 }
         }
         .frame(
