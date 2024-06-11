@@ -94,4 +94,5 @@ extension Defaults.Keys {
 
     static let excludedApps = Key<[URL]>("excludedApps", default: [])
     static let sizeIncrement = Key<CGFloat>("sizeIncrement", default: 20)
+    static let tooltipConfiguration = Key<TooltipConfiguration>("tooltipConfiguration", default: .notch)
 }

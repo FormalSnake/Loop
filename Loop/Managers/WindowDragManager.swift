@@ -7,13 +7,14 @@
 
 import Cocoa
 import Defaults
+import DynamicNotchKit
 
 class WindowDragManager {
-    private var draggingWindow: Window?
-    private var initialWindowFrame: CGRect?
-    private var direction: WindowDirection = .noAction
+    var draggingWindow: Window?
+    var initialWindowFrame: CGRect?
+    var direction: WindowDirection = .noAction
 
-    private let previewController = PreviewController()
+    let previewController = PreviewController()
 
     private var leftMouseDraggedMonitor: EventMonitor?
     private var leftMouseUpMonitor: EventMonitor?
@@ -35,6 +36,7 @@ class WindowDragManager {
                 }
 
                 if Defaults[.windowSnapping] {
+                    // This prevents Mission Control from activating
                     if let frame = NSScreen.main?.frame {
                         if NSEvent.mouseLocation.y == frame.maxY {
                             cgEvent.location.y -= 1
@@ -121,72 +123,5 @@ class WindowDragManager {
         }
 
         WindowRecords.eraseRecords(for: window)
-    }
-
-    private func getWindowSnapDirection() {
-        guard let screen = NSScreen.screenWithMouse else {
-            return
-        }
-        let mousePosition = NSEvent.mouseLocation.flipY(maxY: screen.frame.maxY)
-        let screenFrame = screen.frame.flipY(maxY: screen.frame.maxY)
-
-        previewController.setScreen(to: screen)
-
-        let insets: CGFloat = 2
-        let topInset = screen.menubarHeight / 2
-        var ignoredFrame = screenFrame
-
-        ignoredFrame.origin.x += insets
-        ignoredFrame.size.width -= insets * 2
-        ignoredFrame.origin.y += topInset
-        ignoredFrame.size.height -= insets + topInset
-
-        let oldDirection = direction
-
-        if !ignoredFrame.contains(mousePosition) {
-            direction = WindowDirection.processSnap(
-                mouseLocation: mousePosition,
-                currentDirection: direction,
-                screenFrame: screenFrame,
-                ignoredFrame: ignoredFrame
-            )
-
-            print("Window snapping direction changed: \(direction)")
-
-            previewController.open(screen: screen, window: nil)
-
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(
-                    name: Notification.Name.updateUIDirection,
-                    object: nil,
-                    userInfo: ["action": WindowAction(self.direction)]
-                )
-            }
-        } else {
-            direction = .noAction
-            previewController.close()
-        }
-
-        if direction != oldDirection {
-            if Defaults[.hapticFeedback] {
-                NSHapticFeedbackManager.defaultPerformer.perform(
-                    NSHapticFeedbackManager.FeedbackPattern.alignment,
-                    performanceTime: NSHapticFeedbackManager.PerformanceTime.now
-                )
-            }
-        }
-    }
-
-    private func attemptWindowSnap(_ window: Window) {
-        guard
-            let screen = NSScreen.screenWithMouse
-        else {
-            return
-        }
-
-        DispatchQueue.main.async {
-            WindowEngine.resize(window, to: .init(self.direction), on: screen)
-            self.direction = .noAction
-        }
     }
 }
