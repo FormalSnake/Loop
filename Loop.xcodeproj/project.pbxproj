@@ -25,9 +25,8 @@
 		A82521EE29E235AC00139654 /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82521ED29E235AC00139654 /* PermissionsManager.swift */; };
 		A826EA5A2C17DD72003EACA3 /* ResizeSelectorRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A826EA522C17DD72003EACA3 /* ResizeSelectorRectangle.swift */; };
 		A826EA5B2C17DD72003EACA3 /* ResizeSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A826EA532C17DD72003EACA3 /* ResizeSelectorView.swift */; };
-		A826EA5C2C17DD72003EACA3 /* TooltipConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A826EA552C17DD72003EACA3 /* TooltipConfiguration.swift */; };
 		A826EA5D2C17DD72003EACA3 /* TooltipManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A826EA562C17DD72003EACA3 /* TooltipManager.swift */; };
-		A826EA5F2C18F1BC003EACA3 /* WindowDragManager+Snapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = A826EA5E2C18F1BC003EACA3 /* WindowDragManager+Snapping.swift */; };
+		A826EA5F2C18F1BC003EACA3 /* WindowSnappingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A826EA5E2C18F1BC003EACA3 /* WindowSnappingManager.swift */; };
 		A826EA642C18FACF003EACA3 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = A826EA632C18FACF003EACA3 /* DynamicNotchKit */; };
 		A82740982AB00FCE00B9BDC5 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82740972AB00FCE00B9BDC5 /* Color+Extensions.swift */; };
 		A827409A2AB0208500B9BDC5 /* TriggerKeycorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82740992AB0208500B9BDC5 /* TriggerKeycorder.swift */; };
@@ -118,9 +117,8 @@
 		A82521ED29E235AC00139654 /* PermissionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsManager.swift; sourceTree = "<group>"; };
 		A826EA522C17DD72003EACA3 /* ResizeSelectorRectangle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResizeSelectorRectangle.swift; sourceTree = "<group>"; };
 		A826EA532C17DD72003EACA3 /* ResizeSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResizeSelectorView.swift; sourceTree = "<group>"; };
-		A826EA552C17DD72003EACA3 /* TooltipConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TooltipConfiguration.swift; sourceTree = "<group>"; };
 		A826EA562C17DD72003EACA3 /* TooltipManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TooltipManager.swift; sourceTree = "<group>"; };
-		A826EA5E2C18F1BC003EACA3 /* WindowDragManager+Snapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WindowDragManager+Snapping.swift"; sourceTree = "<group>"; };
+		A826EA5E2C18F1BC003EACA3 /* WindowSnappingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowSnappingManager.swift; sourceTree = "<group>"; };
 		A82740972AB00FCE00B9BDC5 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		A82740992AB0208500B9BDC5 /* TriggerKeycorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerKeycorder.swift; sourceTree = "<group>"; };
 		A82B1AED2BD352A100E2F3F9 /* AccentColorConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColorConfiguration.swift; sourceTree = "<group>"; };
@@ -250,7 +248,6 @@
 			children = (
 				A826EA542C17DD72003EACA3 /* ResizeSelector */,
 				A826EA562C17DD72003EACA3 /* TooltipManager.swift */,
-				A826EA552C17DD72003EACA3 /* TooltipConfiguration.swift */,
 			);
 			path = Tooltip;
 			sourceTree = "<group>";
@@ -282,7 +279,7 @@
 				A87DDD142B50A6A400A32C76 /* ScreenManager.swift */,
 				A8A2ABE62A3FB0370067B5A9 /* KeybindMonitor.swift */,
 				A864F4672AA660CD00579738 /* WindowDragManager.swift */,
-				A826EA5E2C18F1BC003EACA3 /* WindowDragManager+Snapping.swift */,
+				A826EA5E2C18F1BC003EACA3 /* WindowSnappingManager.swift */,
 				A82521ED29E235AC00139654 /* PermissionsManager.swift */,
 				A8EF1F08299C87DF00633440 /* IconManager.swift */,
 				A869C1A02B38C6E600AD1A84 /* StageManager.swift */,
@@ -609,7 +606,7 @@
 				A869C1A12B38C6E600AD1A84 /* StageManager.swift in Sources */,
 				A8330ACD2A3AC1D100673C8D /* CGGeometry+Extensions.swift in Sources */,
 				A82B1AF22BD35A3800E2F3F9 /* PreviewConfiguration.swift in Sources */,
-				A826EA5F2C18F1BC003EACA3 /* WindowDragManager+Snapping.swift in Sources */,
+				A826EA5F2C18F1BC003EACA3 /* WindowSnappingManager.swift in Sources */,
 				A826EA5D2C17DD72003EACA3 /* TooltipManager.swift in Sources */,
 				A8330AC72A3AC19500673C8D /* NSScreen+Extensions.swift in Sources */,
 				A80900D52AA3F9F30085C63B /* VisualEffectView.swift in Sources */,
@@ -655,7 +652,6 @@
 				A8E8903C2BA7AAFE006C5074 /* NSEvent+Extensions.swift in Sources */,
 				0A6DC3EB2BB869DE002AB05F /* WindowAction+Image.swift in Sources */,
 				A83E1C352ABFCA3200853FE9 /* WindowRecords.swift in Sources */,
-				A826EA5C2C17DD72003EACA3 /* TooltipConfiguration.swift in Sources */,
 				A85DDBDA2C1693D4008C103D /* WindowDirection+Snapping.swift in Sources */,
 				A81989082AC8F2AE00EFF7A1 /* MenuBarResizeButton.swift in Sources */,
 				A87DDD152B50A6A400A32C76 /* ScreenManager.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  WindowDragManager+Snapping.swift
+//  WindowSnappingManager.swift
 //  Loop
 //
 //  Created by Kai Azim on 2024-06-11.
@@ -8,7 +8,10 @@
 import Cocoa
 import Defaults
 
-extension WindowDragManager {
+class WindowSnappingManager {
+    private var direction: WindowDirection = .noAction
+    private let previewController = PreviewController()
+
     func getWindowSnapDirection() {
         guard let screen = NSScreen.screenWithMouse else {
             return
@@ -49,7 +52,7 @@ extension WindowDragManager {
                 )
             }
         } else {
-            cancelWindowSnapping()
+            reset()
         }
 
         if direction != oldDirection {
@@ -62,12 +65,14 @@ extension WindowDragManager {
         }
     }
 
-    func cancelWindowSnapping() {
-        direction = .noAction
-        previewController.close()
+    func reset() {
+        DispatchQueue.main.async {
+            self.direction = .noAction
+            self.previewController.close()
+        }
     }
 
-    func attemptWindowSnap(_ window: Window) {
+    func closeAndResize(_ window: Window) {
         guard let screen = NSScreen.screenWithMouse else {
             return
         }

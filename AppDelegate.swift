@@ -12,7 +12,6 @@ import UserNotifications
 class AppDelegate: NSObject, NSApplicationDelegate {
     static let loopManager = LoopManager()
     static let windowDragManager = WindowDragManager()
-    static let tooltipManager = TooltipManager()
     static var isActive: Bool = false
 
     private var launchedAsLoginItem: Bool {
@@ -32,7 +31,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         IconManager.refreshCurrentAppIcon()
         AppDelegate.loopManager.start()
         AppDelegate.windowDragManager.addObservers()
-        AppDelegate.tooltipManager.start()
 
         if !launchedAsLoginItem {
             LuminareManager.open()

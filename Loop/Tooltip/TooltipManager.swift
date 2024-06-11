@@ -10,45 +10,19 @@ import DynamicNotchKit
 import SwiftUI
 
 class TooltipManager: ObservableObject {
-    private var eventMonitor: EventMonitor?
     private var dynamicNotch: DynamicNotch?
-
-    private var didForceClose: Bool = false // This is auto-reset once the user stops dragging
-    private var draggingWindow: Window?
 
     @Published var screen: NSScreen?
     @Published var currentAction: WindowAction = .init(.noAction)
     @Published var directionMap: [UUID: (action: WindowAction, frame: NSRect)] = [:]
 
-    func start() {
-        dynamicNotch = DynamicNotch(
-            content: ResizeSelectorView()
-                .environmentObject(self)
-        )
-
-        eventMonitor = NSEventMonitor(
-            scope: .global,
-            eventMask: [.leftMouseDragged, .leftMouseUp, .keyDown]
-        ) { event in
-            if event.type == .leftMouseDragged {
-                self.leftMouseDragged(event: event)
-            }
-
-            if event.type == .leftMouseUp {
-                self.leftMouseUp()
-            }
-
-            if event.type == .keyDown,
-               event.keyCode == .kVK_Escape {
-                self.close(forceClose: true)
-            }
+    func showIfPossible() {
+        if dynamicNotch == nil {
+            dynamicNotch = DynamicNotch(
+                content: ResizeSelectorView()
+                    .environmentObject(self)
+            )
         }
-
-        eventMonitor!.start()
-    }
-
-    func leftMouseDragged(event: NSEvent) {
-        guard Defaults[.tooltipConfiguration] != .off, !didForceClose else { return }
 
         if let screenWithMouse = NSScreen.screenWithMouse {
             if screen != screenWithMouse {
@@ -57,10 +31,6 @@ class TooltipManager: ObservableObject {
             }
 
             self.screen = screenWithMouse
-        }
-
-        if draggingWindow == nil {
-            draggingWindow = WindowEngine.frontmostWindow
         }
 
         if DynamicNotch.checkIfMouseIsInNotch(), let dynamicNotch, let screen, !dynamicNotch.isVisible {
@@ -93,36 +63,15 @@ class TooltipManager: ObservableObject {
         }
     }
 
-    private func hasWindowMoved(_ windowFrame: CGRect, _ initialFrame: CGRect) -> Bool {
-        !initialFrame.topLeftPoint.approximatelyEqual(to: windowFrame.topLeftPoint, tolerance: 50) &&
-            !initialFrame.topRightPoint.approximatelyEqual(to: windowFrame.topRightPoint, tolerance: 50) &&
-            !initialFrame.bottomLeftPoint.approximatelyEqual(to: windowFrame.bottomLeftPoint, tolerance: 50) &&
-            !initialFrame.bottomRightPoint.approximatelyEqual(to: windowFrame.bottomRightPoint, tolerance: 50)
-    }
-
-    func leftMouseUp() {
-        let configuration = Defaults[.tooltipConfiguration]
-        guard configuration != .off else { return }
-
-        let shouldResize = dynamicNotch?.isVisible ?? false
-        close(forceClose: !shouldResize)
-        didForceClose = false
-    }
-
-    private func close(forceClose: Bool = false) {
+    func closeAndResize(_ window: Window) {
         dynamicNotch?.hide()
 
-        if !forceClose, let window = draggingWindow, let screen {
+        if let screen {
             WindowEngine.resize(window, to: currentAction, on: screen)
         }
 
         screen = nil
         currentAction = .init(.noAction)
-        draggingWindow = nil
         directionMap = [:]
-
-        if forceClose {
-            didForceClose = true
-        }
     }
 }

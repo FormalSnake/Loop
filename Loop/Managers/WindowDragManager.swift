@@ -12,9 +12,9 @@ import DynamicNotchKit
 class WindowDragManager {
     var draggingWindow: Window?
     var initialWindowFrame: CGRect?
-    var direction: WindowDirection = .noAction
 
-    let previewController = PreviewController()
+    let windowSnappingManager = WindowSnappingManager()
+    let tooltipManager = TooltipManager()
 
     private var leftMouseDraggedMonitor: EventMonitor?
     private var leftMouseUpMonitor: EventMonitor?
@@ -35,15 +35,24 @@ class WindowDragManager {
                     WindowRecords.eraseRecords(for: window)
                 }
 
-                if Defaults[.windowSnapping] {
+                let showTooltip = Defaults[.tooltip]
+                let windowSnapping = Defaults[.windowSnapping]
+
+                if showTooltip || windowSnapping {
                     // This prevents Mission Control from activating
                     if let frame = NSScreen.main?.frame {
                         if NSEvent.mouseLocation.y == frame.maxY {
                             cgEvent.location.y -= 1
                         }
                     }
+                }
 
-                    self.getWindowSnapDirection()
+                if Defaults[.tooltip] {
+                    self.tooltipManager.showIfPossible()
+                }
+
+                if Defaults[.windowSnapping] {
+                    self.windowSnappingManager.getWindowSnapDirection()
                 }
             }
 
@@ -54,12 +63,16 @@ class WindowDragManager {
             if let window = self.draggingWindow,
                let initialFrame = self.initialWindowFrame,
                self.hasWindowMoved(window.frame, initialFrame) {
+                if Defaults[.tooltip] {
+                    self.tooltipManager.closeAndResize(window)
+                }
+
                 if Defaults[.windowSnapping] {
-                    self.attemptWindowSnap(window)
+                    self.windowSnappingManager.closeAndResize(window)
                 }
             }
 
-            self.previewController.close()
+            self.windowSnappingManager.reset()
             self.draggingWindow = nil
         }
 
